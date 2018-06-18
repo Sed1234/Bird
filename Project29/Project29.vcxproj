@@ -120,6 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bird.h" />
+    <ClInclude Include="map.h" />
     <ClInclude Include="Pixel.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
