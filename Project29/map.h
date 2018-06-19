@@ -1,32 +1,26 @@
+#pragma once
 #include <SFML\Graphics.hpp>
-const int HEIGHT_MAP = 25;//размер карты высота
+const int HEIGHT_MAP = 18;//размер карты высота
 const int WIDTH_MAP = 38;//размер карты ширина 
 
 
-sf::String TileMap[HEIGHT_MAP] = {
+sf::String static TileMap[HEIGHT_MAP] = {
 	"00000000000000000000000000000000000000",
+	"0                         s          0",
+	"0                  s                 0",
+	"0                              ss    0",
 	"0                                    0",
-	"0                           s        0",
-	"0                                    0",
-	"0                                    0",
-	"0                                    0",
-	"0                                s   0",
-	"0                                    0",
-	"0                                    0",
-	"0                                    0",
-	"0                                s   0",
-	"0                                    0",
-	"0                                    0",
+	"0             s        s      s      0",
+	"0                     s              0",
+	"0              s                     0",
 	"0                                    0",
 	"0                            s       0",
-	"0                                    0",
-	"0                                    0",
-	"0                              s     0",
-	"0                                    0",
-	"0                                    0",
-	"0                                    0",
+	"0               s                  s 0",
+	"0                     s              0",
+	"0                  s                 0",
+	"0               s        s           0",
 	"0                                    0",
 	"0                                    0",
 	"0                                    0",
-	"00000000000000000000000000000000000000",
+	"JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ",
 };
