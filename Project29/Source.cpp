@@ -25,7 +25,7 @@ int main() {
 	for (size_t i = 0; i < 20; ++i) {
 		rock.setTexture(temp);
 		rock.setTextureRect(sf::IntRect(32, 0, 32, 32));
-		rock.setPosition(sf::Vector2f((rand() % 18 + 18) * 32, (rand() % 18) * 32));
+		rock.setPosition(sf::Vector2f((rand() % 18 + 18) * 32, (rand() % 18-2) * 32));
 		rocks.push_back(rock);
 	}
 	
@@ -53,9 +53,12 @@ int main() {
 					}
 					p.sprite.setTextureRect(sf::IntRect(75.6* int(CurrentFrame), 0, 75.6, 67));
 				}
+				else {
+					p.dir = 2; p.speed = 0.01;
+				}
 				p.update(time);
 			}
-
+			
 		}
 		p.sprite.move(0, 0.05);
 		window.clear(sf::Color::Black);
@@ -65,11 +68,7 @@ int main() {
 			{
 				if (TileMap[i][j] == ' ')  s_map.setTextureRect(sf::IntRect(0, 0, 32, 32)); //если встретили символ пробел, то рисуем 1й квадратик
 				if (TileMap[i][j] == '0') s_map.setTextureRect(sf::IntRect(64, 0, 32, 32));//если встретили символ 0, то рисуем 3й квадратик
-				if (TileMap[i][j] == 'J') s_map.setTextureRect(sf::IntRect(96, 0, 32, 32));//если встретили символ 0, то рисуем 3й квадратик
-				/*if (TileMap[i][j] == 's') {
-					s_map.setTextureRect(sf::IntRect(32, 0, 32, 32));
-					s_map.setPosition(rock.getPosition() - sf::Vector2f(0.05, 0));
-				}*/
+				if (TileMap[i][j] == '1') s_map.setTextureRect(sf::IntRect(96, 0, 32, 32));//если встретили символ 0, то рисуем 3й квадратик
 				s_map.setPosition(j * 32, i * 32);//по сути раскидывает квадратики, превращая в карту. то есть задает каждому из них позицию. если убрать, то вся карта нарисуется в одном квадрате 32*32 и мы увидим один квадрат
 				window.draw(s_map);//рисуем квадратики на экран
 			}
@@ -78,8 +77,14 @@ int main() {
 		for (sf::Sprite & rock : rocks)
 		{
 			rock.setPosition(rock.getPosition() - sf::Vector2f(0.1, 0));
+			if (p.sprite.getPosition() == rock.getPosition())
+			{
+				system("pause");
+			}
 			window.draw(rock);
 		}
+
+		
 		window.draw(p.sprite);
 		window.display();
 	}
