@@ -15,14 +15,14 @@ Player::Player(sf::String F, float X, float Y, float W, float H)
 	sprite.setTextureRect(sf::IntRect(0, 0, w, h));
 }
 
-void Player::update(float time)
+void Player::update(float time , sf::RenderWindow & window)
 {
 
 	switch (dir)//реализуем поведение в зависимости от направления. (каждая цифра соответствует направлению)
 	{
-	case 1: dy = -5; dx = speed;
+	case 1: dy = -0.1; dx = speed;
 		break;
-	case 2: dy = 0.1; dx = speed;   
+	case 2: dy = 0.1; dx = speed;
 		break;
 	}
 
@@ -30,10 +30,11 @@ void Player::update(float time)
 	y += dy;//аналогично по игреку
 	speed = 0;//зануляем скорость, чтобы персонаж остановился.
 	sprite.setPosition(x, y); //выводим спрайт в позицию x y , посередине. бесконечно выводим в этой функции, иначе бы наш спрайт стоял на месте.
-	interactionWithMap();
+	interactionWithMap( window);
 }
-void Player::interactionWithMap()
+void Player::interactionWithMap(sf::RenderWindow & window)
 {
+
 	for (int i = y / 32; i < (y + h) / 32; i++)//проходимся по тайликам, контактирующим с игроком,, то есть по всем квадратикам размера 32*32, которые мы окрашивали в 9 уроке. про условия читайте ниже.
 	{
 		for (int j = x / 32; j < (x + w) / 32; j++)//икс делим на 32, тем самым получаем левый квадратик, с которым персонаж соприкасается. (он ведь больше размера 32*32, поэтому может одновременно стоять на нескольких квадратах). А j<(x + w) / 32 - условие ограничения координат по иксу. то есть координата самого правого квадрата, который соприкасается с персонажем. таким образом идем в цикле слева направо по иксу, проходя по от левого квадрата (соприкасающегося с героем), до правого квадрата (соприкасающегося с героем)
@@ -47,12 +48,8 @@ void Player::interactionWithMap()
 			}
 			if (TileMap[i][j] == '1')
 			{
-				system("pause");
-			}
-			if (TileMap[i][j] == 's')
-			{ //если символ равен 's' (камень)
-			  //x = 300; y = 300;//какое то действие... например телепортация героя
-				TileMap[i][j] = ' ';//убираем камень, типа взяли бонус. можем и не убирать, кстати.
+				//system("pause");
+				window.close();
 			}
 		}
 	}

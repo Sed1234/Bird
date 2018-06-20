@@ -7,28 +7,28 @@
 #include <vector>
 
 int main() {
-	sf::Image map_image;//объект изображения для карты
-	map_image.loadFromFile("images/map.png");//загружаем файл для карты
-	sf::Texture map;//текстура карты
-	map.loadFromImage(map_image);//заряжаем текстуру картинкой
-	sf::Sprite s_map;//создаём спрайт для карты
-	s_map.setTexture(map);//заливаем текстуру спрайтом
-	float CurrentFrame = 0;//хранит текущий кадр
+	sf::Image map_image;
+	map_image.loadFromFile("images/map.png");
+	sf::Texture map;
+	map.loadFromImage(map_image);
+	sf::Sprite s_map;
+	s_map.setTexture(map);
+	float CurrentFrame = 0;
 	sf::RenderWindow window(sf::VideoMode(1200, 600), "SFML works!");
 	sf::Clock clock;
-	Player p("pftcc.png", 250, 250, 75.6, 67);//создаем объект p класса player,задаем "hero.png" как имя файла+расширение, далее координата Х,У, ширина, высота.
-	p.sprite.setPosition(250, 200);//задаем начальные координаты появления спрайта
+	Player p("pftcc.png", 250, 250, 75.6, 67);
+	p.sprite.setPosition(250, 200);
 	std::vector<sf::Sprite> rocks;
 	sf::Sprite rock;
 	sf::Texture temp;
 	temp.loadFromImage(map_image);
-	for (size_t i = 0; i < 20; ++i) {
+	for (size_t i = 0; i < 17; ++i) 
+	 {
 		rock.setTexture(temp);
 		rock.setTextureRect(sf::IntRect(32, 0, 32, 32));
-		rock.setPosition(sf::Vector2f((rand() % 18 + 18) * 32, (rand() % 18-2) * 32));
+		rock.setPosition(sf::Vector2f((rand() % 18 + 18) * 32, (rand() % 18 - 2) * 32));
 		rocks.push_back(rock);
 	}
-	
 	while (window.isOpen())
 	{
 		float time = clock.getElapsedTime().asMicroseconds();
@@ -44,47 +44,55 @@ int main() {
 			{
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 				{
-					p.dir = 1; p.speed = 0.01;
+					p.dir = 1; p.speed = 0.05;
 					p.sprite.move(0, -11 * time);
-					CurrentFrame += 2.01*time; //служит для прохождения по "кадрам". переменная доходит до трех суммируя произведение времени и скорости. изменив 0.005 можно изменить скорость анимации
+					CurrentFrame += 2.01*time;
 					if (CurrentFrame > 14)
 					{
 						CurrentFrame -= 14;
 					}
 					p.sprite.setTextureRect(sf::IntRect(75.6* int(CurrentFrame), 0, 75.6, 67));
 				}
-				else {
-					p.dir = 2; p.speed = 0.01;
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+				{
+					p.dir = 2; p.speed = 0.05;
+					//p.sprite.move(0, 0.05);
+					p.sprite.move(0, -11 * time);
+					CurrentFrame += 2.01*time;
+					if (CurrentFrame > 14)
+					{
+						CurrentFrame -= 14;
+					}
+					p.sprite.setTextureRect(sf::IntRect(75.6* int(CurrentFrame), 0, 75.6, 67));
 				}
-				p.update(time);
 			}
-			
 		}
-		p.sprite.move(0, 0.05);
+		//p.sprite.move(0, 0.05);
+		p.update(time,  window);
 		window.clear(sf::Color::Black);
-		for (int i = 0; i < HEIGHT_MAP; i++) 
+		for (int i = 0; i < HEIGHT_MAP; i++)
 		{
 			for (int j = 0; j < WIDTH_MAP; j++)
 			{
-				if (TileMap[i][j] == ' ')  s_map.setTextureRect(sf::IntRect(0, 0, 32, 32)); //если встретили символ пробел, то рисуем 1й квадратик
-				if (TileMap[i][j] == '0') s_map.setTextureRect(sf::IntRect(64, 0, 32, 32));//если встретили символ 0, то рисуем 3й квадратик
-				if (TileMap[i][j] == '1') s_map.setTextureRect(sf::IntRect(96, 0, 32, 32));//если встретили символ 0, то рисуем 3й квадратик
-				s_map.setPosition(j * 32, i * 32);//по сути раскидывает квадратики, превращая в карту. то есть задает каждому из них позицию. если убрать, то вся карта нарисуется в одном квадрате 32*32 и мы увидим один квадрат
-				window.draw(s_map);//рисуем квадратики на экран
+				if (TileMap[i][j] == ' ')  s_map.setTextureRect(sf::IntRect(0, 0, 32, 32));
+				if (TileMap[i][j] == '0') s_map.setTextureRect(sf::IntRect(64, 0, 32, 32));
+				if (TileMap[i][j] == '1') s_map.setTextureRect(sf::IntRect(96, 0, 32, 32));
+				s_map.setPosition(j * 32, i * 32);
+				window.draw(s_map);
 			}
 		}
 		
+
 		for (sf::Sprite & rock : rocks)
 		{
 			rock.setPosition(rock.getPosition() - sf::Vector2f(0.1, 0));
-			if (p.sprite.getPosition() == rock.getPosition())
+			if (p.sprite.getGlobalBounds().intersects(rock.getGlobalBounds()))
 			{
-				system("pause");
+				window.close();
 			}
 			window.draw(rock);
 		}
 
-		
 		window.draw(p.sprite);
 		window.display();
 	}

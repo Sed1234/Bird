@@ -3,6 +3,7 @@
 #include <iostream> 
 #include <SFML/Graphics.hpp>
 #include "map.h"
+#include <vector>
 
 
 class Player
@@ -17,8 +18,8 @@ public:
 	sf::Texture texture;//сфмл текстура
 	sf::Sprite sprite;//сфмл спрайт
 	Player(sf::String F, float X, float Y, float W, float H);
-	void update(float);
-	void interactionWithMap();
+	void update(float , sf::RenderWindow &);
+	void interactionWithMap(sf::RenderWindow & window);
 	float getplayercoordinateX();
 	float getplayercoordinateY();
 	~Player();
